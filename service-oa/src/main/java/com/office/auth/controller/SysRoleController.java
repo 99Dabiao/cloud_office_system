@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.office.auth.service.SysRoleService;
+import com.office.common.config.exception.CloudOfficeException;
 import com.office.common.result.Result;
 import com.office.model.system.SysRole;
 import com.office.vo.system.SysRoleQueryVo;
@@ -14,7 +15,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -36,6 +36,17 @@ public class SysRoleController {
     public Result<List<SysRole>> findAll(){
         List<SysRole> sysRoleList = sysRoleService.list();
         return Result.ok(sysRoleList);
+    }
+
+    @ApiOperation( value = "自定义异常调试")
+    @GetMapping("exception")
+    public Result<List> exception(){
+        try {
+            int a = 10/0;
+        }catch(Exception e) {
+            throw new CloudOfficeException(20001,"出现自定义异常");
+        }
+        return Result.ok();
     }
 
     @ApiOperation( value = "条件分页查询")
