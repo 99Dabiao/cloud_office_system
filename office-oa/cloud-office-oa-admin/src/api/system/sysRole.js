@@ -14,7 +14,44 @@ export default {
     return request({
       url: `${api_name}/${currentPage}/${limit}`,
       method: 'get',
+      //普通对象参数写法params:对象参数名称
+      //JSON写法data:对象参数名称
       params: searchObj
     })
-  }
+  },
+  removeById(id) {
+    return request({
+      url: `${api_name}/remove/${id}`,
+      method: 'delete'
+    })
+  },
+  save(role) {
+    return request({
+      url: `${api_name}/save`,
+      method: 'post',
+      data: role
+    })
+  },
+  getById(id) {
+    return request({
+      url: `${api_name}/get/${id}`,
+      method: 'get'
+    })
+  },
+
+  updateById(role) {
+    return request({
+      url: `${api_name}/update`,
+      method: 'put',
+      data: role
+    })
+  },
+  batchRemove(idList){
+    return request({
+      url: `${api_name}/batchRemove`,
+      method: 'delete',
+      data: idList
+    })
+  },
+
 }
