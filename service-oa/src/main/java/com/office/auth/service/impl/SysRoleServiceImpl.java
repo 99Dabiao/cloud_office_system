@@ -7,7 +7,7 @@ import com.office.auth.mapper.SysUserRoleMapper;
 import com.office.auth.service.SysRoleService;
 import com.office.model.system.SysRole;
 import com.office.model.system.SysUserRole;
-import com.office.vo.system.AssginRoleVo;
+import com.office.vo.system.AssignRoleVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -52,17 +52,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
     @Transactional
     @Override
-    public void doAssign(AssginRoleVo assginRoleVo) {
+    public void doAssign(AssignRoleVo assignRoleVo) {
         //根据userid删除用户原有角色
         sysUserRoleMapper.delete(new
-                LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, assginRoleVo.getUserId()));
+                LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, assignRoleVo.getUserId()));
         //重新分配角色
 
 
-        for(Long roleId : assginRoleVo.getRoleIdList()) {
+        for(Long roleId : assignRoleVo.getRoleIdList()) {
             if(StringUtils.isEmpty(roleId)) continue;
             SysUserRole userRole = new SysUserRole();
-            userRole.setUserId(assginRoleVo.getUserId());
+            userRole.setUserId(assignRoleVo.getUserId());
             userRole.setRoleId(roleId);
             sysUserRoleMapper.insert(userRole);
         }

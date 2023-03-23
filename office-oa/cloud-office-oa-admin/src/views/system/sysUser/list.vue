@@ -329,11 +329,11 @@ export default {
     },
 
     assignRole () {
-      let assginRoleVo = {
+      let assignRoleVo = {
         userId: this.sysUser.id,
         roleIdList: this.userRoleIds
       }
-      roleApi.assignRoles(assginRoleVo).then(response => {
+      roleApi.assignRoles(assignRoleVo).then(response => {
         this.$message.success(response.message || '分配角色成功')
         this.dialogRoleVisible = false
         this.fetchData(this.page)

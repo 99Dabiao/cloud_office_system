@@ -3,6 +3,7 @@ package com.office.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.office.model.system.SysMenu;
+import com.office.vo.system.AssignMenuVo;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface SysMenuService extends IService<SysMenu> {
     List<SysMenu> findNodes();
 
 
+    List<SysMenu> findSysMenuByRoleId(Long roleId);
+
+    void doAssign(AssignMenuVo assignMenuVo);
 }

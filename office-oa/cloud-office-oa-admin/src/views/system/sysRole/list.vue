@@ -53,9 +53,12 @@
       <el-table-column prop="createTime" label="创建时间" width="160"/>
       <el-table-column label="操作" width="200" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row.id)" title="修改"/>
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row.id)"
+                     title="修改"/>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeDataById(scope.row.id)"
                      title="删除"/>
+          <el-button type="warning" icon="el-icon-baseball" size="mini" @click="showAssignAuth(scope.row)"
+                     title="分配权限"/>
         </template>
       </el-table-column>
     </el-table>
@@ -118,6 +121,10 @@ export default {
   watch: {},
 //方法集合
   methods: {
+    //跳转分配菜单界面
+    showAssignAuth(row) {
+      this.$router.push('/system/assignAuth?id='+row.id+'&roleName='+row.roleName);
+    },
     //复选框传值
     handleSelectionChange(selection) {
       this.selections = selection

@@ -3,7 +3,7 @@ package com.office.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.office.model.system.SysRole;
-import com.office.vo.system.AssginRoleVo;
+import com.office.vo.system.AssignRoleVo;
 
 import java.util.Map;
 
@@ -24,8 +24,8 @@ public interface SysRoleService extends IService<SysRole> {
 
     /**
      * 分配角色
-     * @param assginRoleVo
+     * @param assignRoleVo
      */
-    void doAssign(AssginRoleVo assginRoleVo);
+    void doAssign(AssignRoleVo assignRoleVo);
 
 }

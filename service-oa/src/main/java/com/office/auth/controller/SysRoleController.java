@@ -7,7 +7,7 @@ import com.office.auth.service.SysRoleService;
 import com.office.common.config.exception.CloudOfficeException;
 import com.office.common.result.Result;
 import com.office.model.system.SysRole;
-import com.office.vo.system.AssginRoleVo;
+import com.office.vo.system.AssignRoleVo;
 import com.office.vo.system.SysRoleQueryVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,8 +42,8 @@ public class SysRoleController {
 
     @ApiOperation(value = "根据用户分配角色")
     @PostMapping("/doAssign")
-    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo) {
-        sysRoleService.doAssign(assginRoleVo);
+    public Result doAssign(@RequestBody AssignRoleVo assignRoleVo) {
+        sysRoleService.doAssign(assignRoleVo);
         return Result.ok();
     }
 
