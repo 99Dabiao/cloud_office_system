@@ -64,12 +64,21 @@ export const constantRoutes = [
     alwaysShow: true,
     children: [
       {
+        name: 'sysUser',
+        path: 'sysUser',
+        component: () => import('@/views/system/sysUser/list'),
+        meta: {
+          title: '用户管理',
+          icon: 'el-icon-s-custom'
+        },
+      },
+      {
         path: 'sysRole',
         component: () => import('@/views/system/sysRole/list'),
         meta: {
           title: '角色管理',
           icon: 'el-icon-s-help'
-        }
+        },
       }
     ]
   },
