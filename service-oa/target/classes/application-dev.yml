@@ -1,6 +1,7 @@
 server:
   port: 8800
 mybatis-plus:
+  mapper-locations: classpath:com/office/auth/mapper/xml/*.xml
   global-config:
     db-config:
       logic-delete-field: 1
@@ -16,4 +17,15 @@ spring:
     password: SSxx123456.
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
+    time-zone: GMT+8d
+
+
+#knife4j:
+#  # 开启增强配置
+#  enable: true
+#  basic:
+#    enable: true
+#    # Basic认证用户名
+#    username: test
+#    # Basic认证密码
+#    password: 123

@@ -71,7 +71,7 @@ public class SysUserController {
     @ApiOperation(value = "保存用户")
     @PostMapping("save")
     public Result save(@RequestBody SysUser user) {
-        sysUserService.save(user);
+        sysUserService.saveUser(user);
         return Result.ok();
     }
 
