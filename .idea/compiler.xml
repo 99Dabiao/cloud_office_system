@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="spring-security" />
         <module name="common-util" />
         <module name="model" />
         <module name="service-oa" />
@@ -20,6 +21,7 @@
       <module name="model" target="1.8" />
       <module name="service-oa" target="1.8" />
       <module name="service-util" target="1.8" />
+      <module name="spring-security" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -30,6 +32,7 @@
       <module name="model" options="-parameters" />
       <module name="service-oa" options="-parameters" />
       <module name="service-util" options="-parameters" />
+      <module name="spring-security" options="-parameters" />
     </option>
   </component>
 </project>

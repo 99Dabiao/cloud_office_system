@@ -51,6 +51,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void saveUser(SysUser user) {
+
         user.setPassword(MD5.encrypt(user.getPassword()));
         sysUserService.save(user);
     }

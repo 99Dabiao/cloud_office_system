@@ -26,5 +26,7 @@ public interface SysUserService extends IService<SysUser> {
 
     Map<String, Object> getUserInfo(Long userid);
 
+
+
 }
 
