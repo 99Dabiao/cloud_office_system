@@ -1,7 +1,7 @@
 server:
   port: 8800
 mybatis-plus:
-  mapper-locations: classpath:com/office/auth/mapper/xml/*.xml
+  mapper-locations: classpath:com/office/*/mapper/xml/*.xml
   global-config:
     db-config:
       logic-delete-field: 1
@@ -10,6 +10,8 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 查看日志
 spring:
   datasource:
+    hikari:
+      max-lifetime: 120000
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://106.15.59.5:3306/office_oa?useUnicode=true&useSSL=false&characterEncoding=utf8
@@ -19,7 +21,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8d
   redis:
-    host: 106.15.59.5
+    host: 127.0.0.1
     port: 6379
     database: 0
     timeout: 1800000
@@ -30,7 +32,21 @@ spring:
         max-wait: -1    #最大阻塞等待时间(负数表示没限制)
         max-idle: 5    #最大空闲
         min-idle: 0     #最小空闲
-
+  activity:
+    #    false:默认，数据库表不变，但是如果版本不对或者缺失表会抛出异常（生产使用）
+    #    true:表不存在，自动创建（开发使用）
+    #    create_drop: 启动时创建，关闭时删除表（测试使用）
+    #    drop_create: 启动时删除表,在创建表 （不需要手动关闭引擎）
+    database-schema-update: true
+    #监测历史表是否存在，activities7默认不开启历史表
+    db-history-used: true
+    #none：不保存任何历史数据，流程中这是最高效的
+    #activity：只保存流程实例和流程行为
+    #audit：除了activity，还保存全部的流程任务以及其属性，audit为history默认值
+    #full：除了audit、还保存其他全部流程相关的细节数据，包括一些流程参数
+    history-level: full
+    #校验流程文件，默认校验resources下的process 文件夹的流程文件
+    check-process-definitions: true
 #knife4j:
 #  # 开启增强配置
 #  enable: true

@@ -26,6 +26,8 @@
     "vuex": "3.1.0"
   },
   "devDependencies": {
+    "@form-create/element-ui": "^2.5.17",
+    "@form-create/designer": "^1.0.8",
     "@vue/cli-plugin-babel": "4.4.4",
     "@vue/cli-plugin-eslint": "4.4.4",
     "@vue/cli-plugin-unit-jest": "4.4.4",

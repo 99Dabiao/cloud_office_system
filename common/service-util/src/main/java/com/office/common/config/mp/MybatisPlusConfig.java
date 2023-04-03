@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * @Version 1.0
  */
 @Configuration
-@MapperScan("com.office.auth.mapper")
+@MapperScan(basePackages = {"com.office.auth.mapper","com.office.process.mapper"})
 @ComponentScan(basePackages = {"com.office.*"})
 public class MybatisPlusConfig {
 
