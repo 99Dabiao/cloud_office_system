@@ -7,8 +7,8 @@
   <process id="workOverTime" isExecutable="true">
     <startEvent id="sid-96E18023-7BD6-4F64-9DF4-D0BDF9AA2582"></startEvent>
     <endEvent id="sid-898E5D1B-DFC0-4D26-AA4B-020E3D95A74B"></endEvent>
-    <userTask id="sid-C6BEA253-727A-4595-AF4F-41F3E76FFBB2" name="人事审批" activiti:assignee="${assignee2}"></userTask>
-    <userTask id="sid-A14F801E-A59E-4989-BF11-A9910457B181" name="经理审批" activiti:assignee="${assignee1}"></userTask>
+    <userTask id="sid-C6BEA253-727A-4595-AF4F-41F3E76FFBB2" name="人事审批" activiti:assignee="zzjl"></userTask>
+    <userTask id="sid-A14F801E-A59E-4989-BF11-A9910457B181" name="经理审批" activiti:assignee="lisi"></userTask>
     <sequenceFlow id="sid-C30F6F59-B5EE-4ED9-8D41-93E17DE11BE4" sourceRef="sid-96E18023-7BD6-4F64-9DF4-D0BDF9AA2582" targetRef="sid-A14F801E-A59E-4989-BF11-A9910457B181"></sequenceFlow>
     <sequenceFlow id="sid-75F21325-4A5F-4D63-BB70-F3F3F2195A6D" sourceRef="sid-A14F801E-A59E-4989-BF11-A9910457B181" targetRef="sid-C6BEA253-727A-4595-AF4F-41F3E76FFBB2"></sequenceFlow>
     <sequenceFlow id="sid-F1CA855E-29FA-4198-828E-FA7F6DD07171" sourceRef="sid-C6BEA253-727A-4595-AF4F-41F3E76FFBB2" targetRef="sid-898E5D1B-DFC0-4D26-AA4B-020E3D95A74B"></sequenceFlow>

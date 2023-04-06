@@ -5,6 +5,7 @@ import com.office.common.jwt.JwtHelper;
 import com.office.common.result.ResponseUtil;
 import com.office.common.result.Result;
 import com.office.common.result.ResultCodeEnum;
+import com.office.security.custom.LoginUserInfoHelper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -64,6 +65,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             if (!StringUtils.isEmpty(username)) {
                 //通过username从redis中获取数据
                 String authString = (String) redisTemplate.opsForValue().get(username);
+                //放置用户属性到ThreadLocal
+                LoginUserInfoHelper.setUserId( JwtHelper.getUserId(token));
+                LoginUserInfoHelper.setUsername(JwtHelper.getUsername(username));
                 //把redis获取的权限数据转换要求集合类型List<SimpleGrantedAuthority>
                 if (!StringUtils.isEmpty(authString)){
                     List<Map> mapList = JSON.parseArray(authString, Map.class);

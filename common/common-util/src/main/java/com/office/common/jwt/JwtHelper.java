@@ -1,7 +1,7 @@
 package com.office.common.jwt;
 
 import io.jsonwebtoken.*;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
@@ -45,6 +45,8 @@ public class JwtHelper {
             return userId.longValue();
         } catch (Exception e) {
             e.printStackTrace();
+
+
             return null;
         }
     }
@@ -62,11 +64,11 @@ public class JwtHelper {
         }
     }
 
-//    public static void main(String[] args) {
-//        String token = JwtHelper.createToken(1L, "admin");
-//        System.out.println(token);
-//        System.out.println(JwtHelper.getUserId(token));
-//        System.out.println(JwtHelper.getUsername(token));
-//    }
+    public static void main(String[] args) {
+        String token = JwtHelper.createToken(7L, "zhangsan");
+        System.out.println(token);
+        System.out.println(JwtHelper.getUserId(token));
+        System.out.println(JwtHelper.getUsername(token));
+    }
 
 }

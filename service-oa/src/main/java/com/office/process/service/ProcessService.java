@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.office.model.process.Process;
+import com.office.vo.process.ProcessFormVo;
 import com.office.vo.process.ProcessQueryVo;
 import com.office.vo.process.ProcessVo;
 
@@ -20,4 +21,9 @@ public interface ProcessService extends IService<Process> {
     IPage<ProcessVo> selectPage(Page<ProcessVo> pageParam, ProcessQueryVo processQueryVo);
     //部署流程定义
     void deployByZip(String deployPath);
+    //启动流程实例
+    void startUp(ProcessFormVo processFormVo);
+
+    IPage<ProcessVo>  findPending(Page<java.lang.Process> pageParam);
 }
+
