@@ -13,8 +13,8 @@
     <sequenceFlow id="sid-75F21325-4A5F-4D63-BB70-F3F3F2195A6D" sourceRef="sid-A14F801E-A59E-4989-BF11-A9910457B181" targetRef="sid-C6BEA253-727A-4595-AF4F-41F3E76FFBB2"></sequenceFlow>
     <sequenceFlow id="sid-F1CA855E-29FA-4198-828E-FA7F6DD07171" sourceRef="sid-C6BEA253-727A-4595-AF4F-41F3E76FFBB2" targetRef="sid-898E5D1B-DFC0-4D26-AA4B-020E3D95A74B"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_process">
-    <bpmndi:BPMNPlane bpmnElement="process" id="BPMNPlane_process">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_workOverTime">
+    <bpmndi:BPMNPlane bpmnElement="workOverTime" id="BPMNPlane_workOverTime">
       <bpmndi:BPMNShape bpmnElement="sid-96E18023-7BD6-4F64-9DF4-D0BDF9AA2582" id="BPMNShape_sid-96E18023-7BD6-4F64-9DF4-D0BDF9AA2582">
         <omgdc:Bounds height="30.0" width="30.0" x="165.0" y="154.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

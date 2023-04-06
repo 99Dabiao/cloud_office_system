@@ -24,7 +24,7 @@ export default {
 
   data() {
     return {
-      processTemplateprocessTemplate: null,
+      processTemplateProcessTemplate: null,
       rule: [],
       option: {}
     };
@@ -40,7 +40,6 @@ export default {
       api.getProcessTemplate(processTemplateId).then(response => {
         console.log(response.data);
         this.processTemplate = response.data;
-
         this.rule = JSON.parse(this.processTemplate.formProps);
         this.option = JSON.parse(this.processTemplate.formOptions);
       });
@@ -71,7 +70,7 @@ export default {
       api.startUp(processFormVo).then(response => {
         //调整到已发起列表
         this.$router.push({ path: "/list/2" });
-      });
+      })
     }
   }
 };

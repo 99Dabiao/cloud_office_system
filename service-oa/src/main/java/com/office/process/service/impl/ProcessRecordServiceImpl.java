@@ -33,6 +33,6 @@ public class ProcessRecordServiceImpl extends ServiceImpl<ProcessRecordMapper, P
         processRecord.setDescription(description);
         processRecord.setOperateUserId(sysUser.getId());
         processRecord.setOperateUser(sysUser.getName());
-        processRecordMapper.insert(processRecord);
+        baseMapper.insert(processRecord);
     }
 }

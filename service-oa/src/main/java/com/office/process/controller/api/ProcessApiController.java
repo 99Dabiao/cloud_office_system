@@ -1,7 +1,9 @@
 package com.office.process.controller.api;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.office.auth.service.SysUserService;
 import com.office.common.result.Result;
+import com.office.model.process.Process;
 import com.office.process.service.ProcessService;
 import com.office.process.service.ProcessTemplateService;
 import com.office.process.service.ProcessTypeService;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin  //跨域
 public class ProcessApiController {
     @Autowired
+    private SysUserService sysUserService;
+    @Autowired
     private ProcessService processService;
 
     @Autowired
@@ -37,7 +41,6 @@ public class ProcessApiController {
     public Result findPending(
             @ApiParam(name = "page", value = "当前页码", required = true)
             @PathVariable Long page,
-
             @ApiParam(name = "limit", value = "每页记录数", required = true)
             @PathVariable Long limit) {
         Page<Process> pageParam = new Page<>(page, limit);
@@ -47,7 +50,7 @@ public class ProcessApiController {
 
     @ApiOperation(value = "启动流程")
     @PostMapping("/startUp")
-    public Result start(@RequestBody ProcessFormVo processFormVo) {
+    public Result startUp(@RequestBody ProcessFormVo processFormVo) {
         processService.startUp(processFormVo);
         return Result.ok();
     }
@@ -64,4 +67,40 @@ public class ProcessApiController {
     public Result findProcessType() {
         return Result.ok(processTypeService.findProcessType());
     }
+//    //查看审批详情信息
+//    @GetMapping("show/{id}")
+//    public Result show(@PathVariable Long id) {
+//        Map<String,Object> map = processService.show(id);
+//        return Result.ok(map);
+//    }
+//
+//    //审批
+//    @ApiOperation(value = "审批")
+//    @PostMapping("approve")
+//    public Result approve(@RequestBody ApprovalVo approvalVo) {
+//        processService.approve(approvalVo);
+//        return Result.ok();
+//    }
+//    @ApiOperation(value = "已处理")
+//    @GetMapping("/findProcessed/{page}/{limit}")
+//    public Result findProcessed(
+//            @ApiParam(name = "page", value = "当前页码", required = true)
+//            @PathVariable Long page,
+//            @ApiParam(name = "limit", value = "每页记录数", required = true)
+//            @PathVariable Long limit) {
+//        Page<Process> pageParam = new Page<>(page,limit);
+//        return Result.ok(processService.findProcessed(pageParam));
+//    }
+//
+//    @ApiOperation(value = "已发起")
+//    @GetMapping("/findStarted/{page}/{limit}")
+//    public Result findStarted(
+//            @ApiParam(name = "page", value = "当前页码", required = true)
+//            @PathVariable Long page,
+//            @ApiParam(name = "limit", value = "每页记录数", required = true)
+//            @PathVariable Long limit) {
+//        Page<ProcessVo> pageParam = new Page<>(page, limit);
+//        IPage<ProcessVo> pageModel = processService.findStarted(pageParam);
+//        return Result.ok(pageModel);
+//    }
 }

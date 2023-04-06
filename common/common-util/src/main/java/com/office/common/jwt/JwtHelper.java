@@ -38,15 +38,12 @@ public class JwtHelper {
     public static Long getUserId(String token) {
         try {
             if (StringUtils.isEmpty(token)) return null;
-
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
             Claims claims = claimsJws.getBody();
             Integer userId = (Integer) claims.get("userId");
             return userId.longValue();
         } catch (Exception e) {
             e.printStackTrace();
-
-
             return null;
         }
     }
@@ -65,7 +62,7 @@ public class JwtHelper {
     }
 
     public static void main(String[] args) {
-        String token = JwtHelper.createToken(7L, "zhangsan");
+        String token = JwtHelper.createToken(13L, "Dabiao");
         System.out.println(token);
         System.out.println(JwtHelper.getUserId(token));
         System.out.println(JwtHelper.getUsername(token));

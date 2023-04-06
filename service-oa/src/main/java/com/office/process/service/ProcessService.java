@@ -24,6 +24,15 @@ public interface ProcessService extends IService<Process> {
     //启动流程实例
     void startUp(ProcessFormVo processFormVo);
 
-    IPage<ProcessVo>  findPending(Page<java.lang.Process> pageParam);
+    IPage<ProcessVo> findPending(Page<Process> pageParam);
+
+//    IPage<ProcessVo> findProcessed(Page<Process> pageParam);
+//
+//    IPage<ProcessVo> findStarted(Page<ProcessVo> pageParam);
+//
+//    Map<String, Object> show(Long id);
+//
+//    void approve(ApprovalVo approvalVo);
 }
+
 
