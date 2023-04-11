@@ -32,6 +32,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     SysMenuService sysMenuService;
     @Autowired
     SysUserService sysUserService;
+//    @Autowired
+//    private SysDeptService sysDeptService;
     @Override
     @Transactional
     public void updateStatus(Long id, Integer status) {

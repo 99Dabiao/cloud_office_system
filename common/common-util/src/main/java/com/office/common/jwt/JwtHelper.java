@@ -14,12 +14,12 @@ import java.util.Date;
  */
 public class JwtHelper {
 
-    //有效时间
-    private static long tokenExpiration = 365 * 24 * 60 * 60 * 1000;
     //数字签名
-    private static String tokenSignKey = "123456";
+    private static final String tokenSignKey = "123456";
 
     public static String createToken(Long userId, String username) {
+        //有效时间
+        long tokenExpiration = 30L * 24 * 60 * 60 * 1000;
         String token = Jwts.builder()
                 //分类
                 .setSubject("AUTH-USER")
@@ -42,7 +42,7 @@ public class JwtHelper {
             Claims claims = claimsJws.getBody();
             Integer userId = (Integer) claims.get("userId");
             return userId.longValue();
-        } catch (Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
             return null;
         }
@@ -62,7 +62,7 @@ public class JwtHelper {
     }
 
     public static void main(String[] args) {
-        String token = JwtHelper.createToken(13L, "Dabiao");
+        String token = JwtHelper.createToken(5L, "zzjl");
         System.out.println(token);
         System.out.println(JwtHelper.getUserId(token));
         System.out.println(JwtHelper.getUsername(token));

@@ -6,6 +6,10 @@ import com.office.common.result.ResponseUtil;
 import com.office.common.result.Result;
 import com.office.common.result.ResultCodeEnum;
 import com.office.security.custom.LoginUserInfoHelper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +51,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
         if(null != authentication) {
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            chain.doFilter(request, response);
+            try{
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }catch(MalformedJwtException | SignatureException | ExpiredJwtException | UnsupportedJwtException e) {
+                SecurityContextHolder.getContext().setAuthentication(null);
+            } finally {
+                chain.doFilter(request, response);
+            }
         } else {
             ResponseUtil.out(response, Result.build(null, ResultCodeEnum.PERMISSION));
         }
@@ -63,21 +71,22 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             String username = JwtHelper.getUsername(token);
             logger.info("username:"+username);
             if (!StringUtils.isEmpty(username)) {
+                //放置用户属性到ThreadLocal
+                LoginUserInfoHelper.setUserId(JwtHelper.getUserId(token));
+                LoginUserInfoHelper.setUsername(username);
                 //通过username从redis中获取数据
                 String authString = (String) redisTemplate.opsForValue().get(username);
-                //放置用户属性到ThreadLocal
-                LoginUserInfoHelper.setUserId( JwtHelper.getUserId(token));
-                LoginUserInfoHelper.setUsername(JwtHelper.getUsername(username));
                 //把redis获取的权限数据转换要求集合类型List<SimpleGrantedAuthority>
                 if (!StringUtils.isEmpty(authString)){
                     List<Map> mapList = JSON.parseArray(authString, Map.class);
+                    System.out.println(mapList);
                     List<SimpleGrantedAuthority> authList = new ArrayList<>();
                     for (Map map : mapList) {
                         authList.add(new SimpleGrantedAuthority((String)map.get("authority")));
                     }
                     return new UsernamePasswordAuthenticationToken(username, null, authList);
                 } else {
-                    return new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+                    return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
                 }
             }
         }

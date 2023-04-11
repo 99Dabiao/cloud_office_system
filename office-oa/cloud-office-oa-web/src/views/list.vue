@@ -133,7 +133,6 @@ export default {
         if(this.pageNo >= this.pages) {
           this.finished = true;
         }
-
         this.pageNo++;
       });
     },
