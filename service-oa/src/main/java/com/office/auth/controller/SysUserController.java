@@ -25,16 +25,13 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "用户管理接口")
 @RestController
 @RequestMapping("/admin/system/sysUser")
+@CrossOrigin
 public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
 
-//    @ApiOperation(value = "获取当前用户基本信息")
-//    @GetMapping("getCurrentUser")
-//    public Result getCurrentUser() {
-//        return Result.ok(sysUserService.getCurrentUser());
-//    }
+
 
     @ApiOperation(value = "更新状态")
     @GetMapping("updateStatus/{id}/{status}")

@@ -2,7 +2,6 @@ package com.office.process.controller.api;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.office.auth.service.SysUserService;
 import com.office.common.result.Result;
 import com.office.model.process.Process;
 import com.office.process.service.ProcessService;
@@ -31,8 +30,7 @@ import java.util.Map;
 @RequestMapping(value="/admin/process")
 @CrossOrigin  //跨域
 public class ProcessApiController {
-    @Autowired
-    private SysUserService sysUserService;
+
     @Autowired
     private ProcessService processService;
 
@@ -41,15 +39,11 @@ public class ProcessApiController {
     @Autowired
     private ProcessTemplateService processTemplateService;
 
-    @ApiOperation(value = "待处理")
-    @GetMapping("/findPending/{page}/{limit}")
-    public Result findPending(
-            @ApiParam(name = "page", value = "当前页码", required = true)
-            @PathVariable Long page,
-            @ApiParam(name = "limit", value = "每页记录数", required = true)
-            @PathVariable Long limit) {
-        Page<Process> pageParam = new Page<>(page, limit);
-        return Result.ok(processService.findPending(pageParam));
+    @ApiOperation(value = "我的信息")
+    @GetMapping("getCurrentUser")
+    public Result getCurrentUser() {
+        Map<String,Object> map = processService.getCurrentUser();
+        return Result.ok(map);
     }
 
 
@@ -86,6 +80,18 @@ public class ProcessApiController {
         processService.approve(approvalVo);
         return Result.ok();
     }
+
+    @ApiOperation(value = "待处理")
+    @GetMapping("/findPending/{page}/{limit}")
+    public Result findPending(
+            @ApiParam(name = "page", value = "当前页码", required = true)
+            @PathVariable Long page,
+            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @PathVariable Long limit) {
+        Page<Process> pageParam = new Page<>(page, limit);
+        return Result.ok(processService.findPending(pageParam));
+    }
+
     @ApiOperation(value = "已处理")
     @GetMapping("/findProcessed/{page}/{limit}")
     public Result findProcessed(
@@ -93,7 +99,7 @@ public class ProcessApiController {
             @PathVariable Long page,
             @ApiParam(name = "limit", value = "每页记录数", required = true)
             @PathVariable Long limit) {
-        Page<Process> pageParam = new Page<>(page,limit);
+        Page<Process> pageParam = new Page<>(page, limit);
         return Result.ok(processService.findProcessed(pageParam));
     }
 

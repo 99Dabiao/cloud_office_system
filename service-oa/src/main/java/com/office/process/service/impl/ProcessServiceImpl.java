@@ -7,10 +7,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.office.auth.mapper.SysDeptMapper;
+import com.office.auth.mapper.SysPostMapper;
+import com.office.auth.mapper.SysUserMapper;
 import com.office.auth.service.SysUserService;
 import com.office.model.process.Process;
 import com.office.model.process.ProcessRecord;
 import com.office.model.process.ProcessTemplate;
+import com.office.model.system.SysDept;
+import com.office.model.system.SysPost;
 import com.office.model.system.SysUser;
 import com.office.process.mapper.ProcessMapper;
 import com.office.process.service.ProcessRecordService;
@@ -42,6 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,7 +67,12 @@ import java.util.zip.ZipInputStream;
 @Service
 public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> implements ProcessService {
 
-
+    @Resource
+    private SysUserMapper sysUserMapper;
+    @Resource
+    private SysDeptMapper sysDeptMapper;
+    @Resource
+    private SysPostMapper sysPostMapper;
     @Autowired
     private ProcessTemplateService processTemplateService;
 
@@ -83,6 +94,27 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
 
     @Autowired
     private HistoryService historyService;
+
+    @Override
+    public Map<String, Object> getCurrentUser() {
+        SysUser sysUser = sysUserMapper.selectById(LoginUserInfoHelper.getUserId());
+        SysDept sysDept = sysDeptMapper.selectById(sysUser.getDeptId());
+        SysPost sysPost = sysPostMapper.selectById(sysUser.getPostId());
+        Map<String, Object> map = new HashMap<>();
+        try {
+            map.put("name", sysUser.getName());
+            map.put("phone", sysUser.getPhone());
+            map.put("deptName", sysDept.getName());
+            map.put("postName", sysPost.getName());
+        }catch (NullPointerException e){
+            map.put("phone", "无");
+            map.put("deptName", "无");
+            map.put("postName", "无");
+        }
+
+        return map;
+    }
+
     //审批管理列表
     @Override
     public IPage<ProcessVo> selectPage(Page<ProcessVo> pageParam, ProcessQueryVo processQueryVo) {
@@ -105,8 +137,13 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
                 .deploy();
         System.out.println("流程id:"+deploy.getId());
     }
-    //启动流程实例
 
+
+    /**
+     * @author Dabiao
+     * @date 2023/4/13 17:4
+     * @description 启动流程实例
+     **/
     public void startUp(ProcessFormVo processFormVo) {
         SysUser sysUser = sysUserService.getById(LoginUserInfoHelper.getUserId());
 
@@ -169,7 +206,11 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
     }
 
 
-
+    /**
+     * @author Dabiao
+     * @date 2023/4/13 17:4
+     * @description 待处理
+     **/
     @Override
     public IPage<ProcessVo> findPending(Page<Process> pageParam) {
         // 根据当前人的ID查询
@@ -201,46 +242,42 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
         return page;
     }
 
-    //已处理
+    /**
+     * @author Dabiao
+     * @date 2023/4/13 17:4
+     * @description 已处理
+     **/
+
+
+
     @Override
     public IPage<ProcessVo> findProcessed(Page<Process> pageParam) {
-        //封装查询条件
+        // 根据当前人的ID查询
         HistoricTaskInstanceQuery query = historyService.createHistoricTaskInstanceQuery()
                 .taskAssignee(LoginUserInfoHelper.getUsername())
                 .finished().orderByTaskCreateTime().desc();
-
-        //调用方法条件分页查询，返回list集合
-        // 开始位置  和  每页显示记录数
-        int begin = (int)((pageParam.getCurrent()-1)*pageParam.getSize());
-        int size = (int)pageParam.getSize();
-        List<HistoricTaskInstance> list = query.listPage(begin, size);
+        List<HistoricTaskInstance> list = query.listPage((int) ((pageParam.getCurrent() - 1) * pageParam.getSize()), (int) pageParam.getSize());
         long totalCount = query.count();
 
-        //遍历返回list集合，封装List<ProcessVo>
-        List<ProcessVo> processVoList = new ArrayList<>();
-        for(HistoricTaskInstance item : list) {
-            //流程实例id
+        List<ProcessVo> processList = new ArrayList<>();
+        for (HistoricTaskInstance item : list) {
             String processInstanceId = item.getProcessInstanceId();
-            //根据流程实例id查询获取process信息
-            LambdaQueryWrapper<Process> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Process::getProcessInstanceId,processInstanceId);
-            Process process = baseMapper.selectOne(wrapper);
-            // process -- processVo
+            Process process = this.getOne(new LambdaQueryWrapper<Process>().eq(Process::getProcessInstanceId, processInstanceId));
             ProcessVo processVo = new ProcessVo();
-            BeanUtils.copyProperties(process,processVo);
+            BeanUtils.copyProperties(process, processVo);
             processVo.setTaskId("0");
-            //放到list
-            processVoList.add(processVo);
+            processList.add(processVo);
         }
-
-        //IPage封装分页查询所有数据，返回
-        IPage<ProcessVo> pageModel =
-                new Page<ProcessVo>(pageParam.getCurrent(),pageParam.getSize(),
-                        totalCount);
-        pageModel.setRecords(processVoList);
-        return pageModel;
+        IPage<ProcessVo> page = new Page<ProcessVo>(pageParam.getCurrent(), pageParam.getSize(), totalCount);
+        page.setRecords(processList);
+        return page;
     }
 
+    /**
+     * @author Dabiao
+     * @date 2023/4/13 17:4
+     * @description 已发起
+     **/
     @Override
     public IPage<ProcessVo> findStarted(Page<ProcessVo> pageParam) {
         ProcessQueryVo processQueryVo = new ProcessQueryVo();
@@ -252,40 +289,45 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
         return pageModel;
     }
 
+    /**
+     * @author Dabiao
+     * @date 2023/4/13 17:4
+     * @description 展示审批流程
+     **/
     @Override
     public Map<String, Object> show(Long id) {
-        //1 根据流程id获取流程信息Process
+        // 1 根据流程id获取流程信息
         Process process = baseMapper.selectById(id);
 
-        //2 根据流程id获取流程记录信息
-        LambdaQueryWrapper<ProcessRecord> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(ProcessRecord::getProcessId,id);
-        List<ProcessRecord> processRecordList = processRecordService.list(wrapper);
+        // 2 根据流程id获取流程记录信息
+        List<ProcessRecord> processRecordList = processRecordService.list(
+                new LambdaQueryWrapper<ProcessRecord>().eq(ProcessRecord::getProcessId,id));
 
-        //3 根据模板id查询模板信息
+        // 3 根据模板id查询模板信息
         ProcessTemplate processTemplate = processTemplateService.getById(process.getProcessTemplateId());
 
-        //4 判断当前用户是否可以审批
-        //可以看到信息不一定能审批，不能重复审批
-        boolean isApprove = false;
-        List<Task> taskList = this.getCurrentTaskList(process.getProcessInstanceId());
-        for(Task task : taskList) {
-            //判断任务审批人是否是当前用户
-            String username = LoginUserInfoHelper.getUsername();
-            if(task.getAssignee().equals(username)) {
-                isApprove = true;
-            }
-        }
+        // 4 判断当前用户是否可以审批
+        // 可以看到信息不一定能审批，不能重复审批
+        boolean isApprove = this.getCurrentTaskList(process.getProcessInstanceId())
+                .stream()
+                .anyMatch(task -> task.getAssignee().equals(LoginUserInfoHelper.getUsername()));
 
-        //5 查询数据封装到map集合，返回
-        Map<String,Object> map = new HashMap<>();
+        // 5 查询数据封装到map集合，返回
+        Map<String, Object> map = new HashMap<>();
         map.put("process", process);
         map.put("processRecordList", processRecordList);
         map.put("processTemplate", processTemplate);
         map.put("isApprove", isApprove);
+
         return map;
     }
 
+
+    /**
+     * @author Dabiao
+     * @date 2023/4/13 17:4
+     * @description 审批
+     **/
     @Override
     public void approve(ApprovalVo approvalVo) {
         //1 从approvalVo获取任务id，根据任务id获取流程变量
@@ -340,7 +382,11 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
 
     }
 
-    //结束流程
+    /**
+     * @author Dabiao
+     * @date 2023/4/13 17:4
+     * @description 结束流程
+     **/
     private void endTask(String taskId) {
         //1 根据任务id获取任务对象 Task
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();

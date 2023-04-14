@@ -37,6 +37,9 @@ public interface ProcessService extends IService<Process> {
     Map<String, Object> show(Long id);
 
     void approve(ApprovalVo approvalVo);
+
+    //我的
+    Map<String, Object> getCurrentUser();
 }
 
 

@@ -28,12 +28,13 @@ import java.util.Map;
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+
     @Autowired
-    SysMenuService sysMenuService;
+    private SysMenuService sysMenuService;
     @Autowired
-    SysUserService sysUserService;
-//    @Autowired
-//    private SysDeptService sysDeptService;
+    private SysUserService sysUserService;
+
+
     @Override
     @Transactional
     public void updateStatus(Long id, Integer status) {
@@ -76,6 +77,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         result.put("routers", routerVoList);
         return result;
     }
+
+
 
 
 }
