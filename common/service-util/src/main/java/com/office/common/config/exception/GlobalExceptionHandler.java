@@ -1,9 +1,12 @@
 package com.office.common.config.exception;
 
 import com.office.common.result.Result;
+import com.office.common.result.ResultCodeEnum;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.nio.file.AccessDeniedException;
 
 /**
  * @ClassName GlobalExceptionHandler
@@ -34,5 +37,16 @@ public class GlobalExceptionHandler {
     public Result error(CloudOfficeException e){
         e.printStackTrace();
         return Result.fail().code(e.getCode()).message(e.getMsg());
+    }
+    /**
+     * spring security异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    public Result error(AccessDeniedException e) throws AccessDeniedException {
+        e.printStackTrace();
+        return Result.build(null, ResultCodeEnum.PERMISSION);
     }
 }

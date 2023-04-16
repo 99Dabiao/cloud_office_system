@@ -2,7 +2,7 @@ package com.office.auth.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.office.model.system.SysRole;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @ClassName SysRoleServiceImpl
@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
  * @Date 2023/3/20 17:30
  * @Version 1.0
  */
+@Mapper
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 }

@@ -1,20 +1,19 @@
-package com.office.vo.wechat;
+package com.office.model.wechat;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.office.model.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @ApiModel(description = "菜单")
-public class MenuVo {
+@TableName("wechat_menu")
+public class WechatMenu extends BaseEntity {
 
     @ApiModelProperty(value = "id")
-    private Long id;
-
-    @ApiModelProperty(value = "id")
+    @TableField("parent_id")
     private Long parentId;
 
     @ApiModelProperty(value = "名称")
@@ -23,17 +22,13 @@ public class MenuVo {
     @ApiModelProperty(value = "类型")
     private String type;
 
-    @ApiModelProperty(value = "url")
+    @ApiModelProperty(value = "网页 链接，用户点击菜单可打开链接")
     private String url;
 
-    @ApiModelProperty(value = "菜单key")
-    private String meunKey;
+    @ApiModelProperty(value = "菜单KEY值，用于消息接口推送")
+    @TableField("menu_key")
+    private String menuKey;
 
     @ApiModelProperty(value = "排序")
     private Integer sort;
-
-    @ApiModelProperty(value = "下级")
-    @TableField(exist = false)
-    private List<MenuVo> children;
-
 }
