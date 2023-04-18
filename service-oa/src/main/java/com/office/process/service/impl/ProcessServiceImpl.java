@@ -21,6 +21,7 @@ import com.office.process.mapper.ProcessMapper;
 import com.office.process.service.ProcessRecordService;
 import com.office.process.service.ProcessService;
 import com.office.process.service.ProcessTemplateService;
+import com.office.process.service.WeChatMessageService;
 import com.office.security.custom.LoginUserInfoHelper;
 import com.office.vo.process.ApprovalVo;
 import com.office.vo.process.ProcessFormVo;
@@ -95,6 +96,9 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
     @Autowired
     private HistoryService historyService;
 
+    @Autowired
+    private WeChatMessageService weChatMessageService;
+
     @Override
     public Map<String, Object> getCurrentUser() {
         SysUser sysUser = sysUserMapper.selectById(LoginUserInfoHelper.getUserId());
@@ -107,7 +111,6 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
             map.put("deptName", sysDept.getName());
             map.put("postName", sysPost.getName());
         }catch (NullPointerException e){
-            map.put("phone", "无");
             map.put("deptName", "无");
             map.put("postName", "无");
         }
@@ -185,6 +188,8 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
                 SysUser user = sysUserService.getByUserName(task.getAssignee());
                 assigneeList.add(user.getName());
                 //推送消息给下一个审批人，后续完善
+                 weChatMessageService.pushPendingMessage(process.getId(),user.getId(), task.getId());
+                 weChatMessageService.pushProcessedMessage(process.getId(),user.getId(),process.getStatus());
             }
             process.setProcessInstanceId(processInstanceId);
             process.setDescription("等待" + StringUtils.join(assigneeList.toArray(), ",") + "审批");
@@ -363,8 +368,9 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
                 String assignee = task.getAssignee();
                 SysUser sysUser = sysUserService.getByUserName(assignee);
                 assignList.add(sysUser.getName());
-
                 //TODO 公众号消息推送
+                weChatMessageService.pushPendingMessage(process.getId(),sysUser.getId(), task.getId());
+                weChatMessageService.pushProcessedMessage(process.getId(),sysUser.getId(),process.getStatus());
             }
             //更新process流程信息
             process.setDescription("等待" + StringUtils.join(assignList.toArray(), ",") + "审批");
@@ -378,6 +384,8 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
                 process.setStatus(-1);
             }
         }
+
+        weChatMessageService.pushProcessedMessage(process.getId(),process.getUserId(),approvalVo.getStatus());
         baseMapper.updateById(process);
 
     }

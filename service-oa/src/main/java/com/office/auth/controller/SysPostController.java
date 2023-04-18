@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-04-13
  */
 @RestController
-@RequestMapping("/process/sys-post")
+@RequestMapping("/admin/system/sysPost")
 public class SysPostController {
 
 }

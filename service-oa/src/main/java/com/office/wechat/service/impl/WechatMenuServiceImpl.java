@@ -50,7 +50,7 @@ public class WechatMenuServiceImpl extends ServiceImpl<WechatMenuMapper, WechatM
             one.put("name", oneMenuVo.getName());
             if(CollectionUtils.isEmpty(oneMenuVo.getChildren())) {
                 one.put("type", oneMenuVo.getType());
-                one.put("url", "http://dabiao.shop/#"+oneMenuVo.getUrl());
+                one.put("url", "http://ggkt1.vipgz1.91tunnel.com/#"+oneMenuVo.getUrl());
             } else {
                 JSONArray subButton = new JSONArray();
                 for(WechatMenuVo twoMenuVo : oneMenuVo.getChildren()) {
@@ -59,7 +59,7 @@ public class WechatMenuServiceImpl extends ServiceImpl<WechatMenuMapper, WechatM
                     if(twoMenuVo.getType().equals("view")) {
                         view.put("name", twoMenuVo.getName());
                         //H5页面地址
-                        view.put("url", "http://dabiao.shop/#" +twoMenuVo.getUrl());
+                        view.put("url", "http://ggkt1.vipgz1.91tunnel.com/#" +twoMenuVo.getUrl());
                     } else {
                         view.put("name", twoMenuVo.getName());
                         view.put("key", twoMenuVo.getMenuKey());

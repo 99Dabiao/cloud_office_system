@@ -4,6 +4,7 @@
       <van-nav-bar
         title="OA审批"
       />
+
       <van-collapse v-model="activeNames">
         <van-collapse-item
           v-for="(item,key) in list"
@@ -42,6 +43,8 @@ export default {
   },
 
   methods: {
+
+
     fetchData() {
       api.findProcessType().then(response => {
         console.log(response.data);

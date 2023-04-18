@@ -6,10 +6,6 @@ import com.office.common.result.ResponseUtil;
 import com.office.common.result.Result;
 import com.office.common.result.ResultCodeEnum;
 import com.office.security.custom.LoginUserInfoHelper;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -51,15 +47,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
         if(null != authentication) {
-            try{
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }catch(MalformedJwtException | SignatureException | ExpiredJwtException | UnsupportedJwtException e) {
-                SecurityContextHolder.getContext().setAuthentication(null);
-            } finally {
                 chain.doFilter(request, response);
-            }
         } else {
-            ResponseUtil.out(response, Result.build(null, ResultCodeEnum.PERMISSION));
+            ResponseUtil.out(response, Result.build(null, ResultCodeEnum.LOGIN_AUTH));
         }
     }
 

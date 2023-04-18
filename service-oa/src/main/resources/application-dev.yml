@@ -50,6 +50,8 @@ spring:
 wechat:
   mpAppId: wxbbc880f4222ee6c5
   mpAppSecret: 006a5e3eafa2809df3ad5d0b05296b86
+  # 授权回调获取用户信息接口地址
+  userInfoUrl: http://office.free.idcfengye.com/admin/wechat/userInfo
 #knife4j:
 #  # 开启增强配置
 #  enable: true

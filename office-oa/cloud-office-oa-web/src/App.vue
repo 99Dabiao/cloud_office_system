@@ -31,8 +31,8 @@ export default {
   },
 
   created() {
-    // 处理微信授权登录
-    // this.wechatLogin();
+    //处理微信授权登录
+    this.wechatLogin();
   },
 
   methods: {
@@ -56,8 +56,8 @@ export default {
         }
         token = window.localStorage.getItem('token') || '';
         if (token == '') {
-          let url = window.location.href.replace('#', 'guiguoa')
-          window.location = 'http://ggkt2.vipgz1.91tunnel.com/admin/wechat/authorize?returnUrl=' + url
+          let url = window.location.href.replace('#', 'officeoa')
+          window.location = 'http://office.free.idcfengye.com/admin/wechat/authorize?returnUrl=' + url
         }
       }
     },
