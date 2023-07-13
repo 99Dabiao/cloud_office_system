@@ -273,8 +273,10 @@ public class ProcessServiceImpl extends ServiceImpl<ProcessMapper, Process> impl
             processVo.setTaskId("0");
             processList.add(processVo);
         }
+        log.info("已处理列表:{}",processList);
         IPage<ProcessVo> page = new Page<ProcessVo>(pageParam.getCurrent(), pageParam.getSize(), totalCount);
         page.setRecords(processList);
+        log.info("已处理页面:{}",page);
         return page;
     }
 

@@ -21,7 +21,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8d
   redis:
-    host: 42.192.228.23
+    host: 127.0.0.1
     port: 6379
     database: 0
     timeout: 1800000

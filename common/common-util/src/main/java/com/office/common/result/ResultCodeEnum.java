@@ -21,8 +21,8 @@ public enum ResultCodeEnum {
         LOGIN_ERROR(210,"认证失败"),
         ACCOUNT_STOP(211,"账户已被停用"),
         ;
-        private Integer code;
-        private String message;
+        private final Integer code;
+        private final String message;
         ResultCodeEnum(Integer code, String message) {
             this.code = code;
             this.message = message;
